@@ -23,10 +23,10 @@ module.exports = async function (fastify, opts) {
     if (process.env.SALESFORCE_ORG_NAME) {
       // If an org reference is set, query Accounts in that org
       const orgName = process.env.SALESFORCE_ORG_NAME;
-      const herokuIntegrationAddon = request.sdk.addons.herokuIntegration;
+      const herokuIntegrationAddon = request.sdk.addons.applink;
 
       logger.info(`Getting org '${orgName}' connection from Heroku Integration add-on...`);
-      const anotherOrg = await herokuIntegrationAddon.getConnection(orgName);
+      const anotherOrg = await herokuIntegrationAddon.getAuthorization(orgName, process.env.ATTACHMENT);
 
       logger.info(`Querying org '${orgName}' (${anotherOrg.id}) Accounts...`);
 
@@ -210,11 +210,11 @@ module.exports = async function (fastify, opts) {
       if (process.env.DATA_CLOUD_ORG && process.env.DATA_CLOUD_QUERY) {
         const orgName = process.env.DATA_CLOUD_ORG;
         const query = process.env.DATA_CLOUD_QUERY;
-        const herokuIntegrationAddon = request.sdk.addons.herokuIntegration;
+        const herokuIntegrationAddon = request.sdk.addons.applink;
 
         // Get DataCloud org connection from add-on
         logger.info(`Getting '${orgName}' org connection from Heroku Integration add-on...`);
-        const org = await herokuIntegrationAddon.getConnection(orgName);
+        const org = await herokuIntegrationAddon.getAuthorization(orgName, process.env.ATTACHMENT);
 
         // Query DataCloud org
         logger.info(`Querying org '${orgName}' (${org.id}): ${query}`);
