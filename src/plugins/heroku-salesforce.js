@@ -4,7 +4,7 @@ const customAsyncHandlers = {};
 
 module.exports = fp(async function (fastify, opts) {
 
-    const salesforceSdk= await import('@heroku/salesforce-sdk-nodejs');
+    const salesforceSdk = await import('@heroku/applink');
 
     // Decorate request w/ 'salesforce' object providing hydrated Salesforce SDK APIs.
     fastify.decorateRequest('salesforce', null);
