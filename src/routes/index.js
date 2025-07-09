@@ -7,7 +7,7 @@ module.exports = async function (fastify, opts) {
    *
    * If the SALESFORCE_ORG_NAME config var is set to a connected org
    * reference, this API will obtain the org's connection from the
-   * Heroku Integration add-on and query Accounts in the target org.
+   * Heroku AppLink add-on and query Accounts in the target org.
    *
    * @param request
    * @param reply
@@ -23,10 +23,10 @@ module.exports = async function (fastify, opts) {
     if (process.env.SALESFORCE_ORG_NAME) {
       // If an org reference is set, query Accounts in that org
       const orgName = process.env.SALESFORCE_ORG_NAME;
-      const herokuIntegrationAddon = request.sdk.addons.herokuIntegration;
+      const appLinkAddon = request.sdk.addons.applink;
 
-      logger.info(`Getting org '${orgName}' connection from Heroku Integration add-on...`);
-      const anotherOrg = await herokuIntegrationAddon.getConnection(orgName);
+      logger.info(`Getting org '${orgName}' connection from Heroku AppLink add-on...`);
+      const anotherOrg = await appLinkAddon.getAuthorization(orgName);
 
       logger.info(`Querying org '${orgName}' (${anotherOrg.id}) Accounts...`);
 
@@ -174,7 +174,7 @@ module.exports = async function (fastify, opts) {
    *
    * If the DATA_CLOUD_ORG config var is set to a connected Data Cloud org
    * reference and the DATA_CLOUD_QUERY config var is set to a Data Cloud query,
-   * this API will obtain DATA_CLOUD_ORG's connection from the Heroku Integration
+   * this API will obtain DATA_CLOUD_ORG's connection from the Heroku AppLink
    * add-on and query the target org.
    *
    * This API not is defined in api-spec.yaml API specification as it will not
@@ -210,11 +210,11 @@ module.exports = async function (fastify, opts) {
       if (process.env.DATA_CLOUD_ORG && process.env.DATA_CLOUD_QUERY) {
         const orgName = process.env.DATA_CLOUD_ORG;
         const query = process.env.DATA_CLOUD_QUERY;
-        const herokuIntegrationAddon = request.sdk.addons.herokuIntegration;
+        const appLinkAddon = request.sdk.addons.applink;
 
         // Get DataCloud org connection from add-on
-        logger.info(`Getting '${orgName}' org connection from Heroku Integration add-on...`);
-        const org = await herokuIntegrationAddon.getConnection(orgName);
+        logger.info(`Getting '${orgName}' org connection from Heroku AppLink add-on...`);
+        const org = await appLinkAddon.getAuthorization(orgName);
 
         // Query DataCloud org
         logger.info(`Querying org '${orgName}' (${org.id}): ${query}`);

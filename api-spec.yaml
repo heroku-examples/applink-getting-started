@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Heroku-Salesforce API
+  title: Heroku AppLink sample app
   description: Sample Heroku app exposing APIs to connected Salesforce and Data Cloud orgs.
 servers:
   - url: http://127.0.0.1:3000
@@ -10,6 +10,11 @@ paths:
     get:
       operationId: GetAccounts
       description: Returns list of array of Accounts
+      x-sfdc:
+        heroku:
+          authorization:
+            connectedApp: 'MyAppLinkConnectedApp'
+            permissionSet: 'MyAppLinkPermSet'
       responses:
         '200':
           description: Successfully returned a list of Accounts
@@ -32,6 +37,11 @@ paths:
         Unit of Work pattern to assign the corresponding values to to its Record
         while maintaining the relationships. It then commits the unit of work and
         returns the Record Id's for each object.
+      x-sfdc:
+        heroku:
+          authorization:
+            connectedApp: 'MyAppLinkConnectedApp'
+            permissionSet: 'MyAppLinkPermSet'
       requestBody:
         required: true
         content:
